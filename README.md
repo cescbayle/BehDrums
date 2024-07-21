@@ -12,8 +12,10 @@ This repository includes the following documents for the development of the GUI 
 - "formhandler.py", for gathering the data of each new recording
 
 Also, the reference files for used in the recording and analysis process
+(to be updated)
 - metronome files
 - interval tracks
 
-(To be updated):
+Other files for the development of scripts in the process:
+(to be updated)
 - scripts for obtaining the "calculus tracks"
