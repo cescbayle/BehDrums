@@ -24,10 +24,10 @@ rudiment = "flamparadiddle" #"paradiddle" for baseline assessment session or "fl
 csv_filename = f"participant{participant}_session{session}_attempt{attempt}_{tempo}bpm_{rudiment}_recording.csv"
 
 # Output directory
-output_directory = "BehDrums/recording_data"
-
+output_directory = "BehDrums/recording_data" 
+ 
 full_csv_path = os.path.join(output_directory, csv_filename)
-
+ 
 
 #RECORDING SCRIPT
 
