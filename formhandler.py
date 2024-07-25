@@ -13,6 +13,7 @@ class FormHandler:
                 cls._instance = super(FormHandler, cls).__new__(cls)
                 cls._instance.participant_number = None
                 cls._instance.session = None
+                cls._instance.block = None
                 cls._instance.attempt = None
                 cls._instance.tempo = None
                 cls._instance.load_data()
@@ -25,17 +26,21 @@ class FormHandler:
                     data = json.load(file)
                     self.participant_number = data.get('participant_number')
                     self.session = data.get('session')
+                    self.block = data.get('block')
                     self.attempt = data.get('attempt')
                     self.tempo = data.get('tempo')
             else:
                 self.participant_number = None
                 self.session = None
-                self.tempo = None
+                self.block = None
                 self.attempt = None
+                self.tempo = None
+                
         except Exception as e:
             print(f"Error loading data: {e}")
             self.participant_number = None
             self.session = None
+            self.block = None
             self.attempt = None
             self.tempo = None
 
@@ -44,6 +49,7 @@ class FormHandler:
         data = {
             'participant_number': self.participant_number,
             'session': self.session,
+            'block': self.block,
             'attempt': self.attempt,
             'tempo': self.tempo
         }
@@ -53,13 +59,14 @@ class FormHandler:
         except Exception as e:
             print(f"Error saving data: {e}")
 
-    def submit_data_entry_form(self, participant_number, session, tempo, attempt):
+    def submit_data_entry_form(self, participant_number, session, block, attempt, tempo):
         self.participant_number = participant_number
         self.session = session
+        self.block = block
         self.attempt = attempt
         self.tempo = tempo
         self.save_data()
-        print(f"Participant number {participant_number}, session {session}, attempt {attempt}, tempo {tempo}, submitted.")
+        print(f"Participant number {participant_number}, session {session}, block {block}, attempt {attempt}, tempo {tempo}, submitted.")
 
     def get_participant_number(self):
         return self.participant_number
@@ -67,14 +74,19 @@ class FormHandler:
     def get_session(self):
         return self.session
     
+    def get_block(self):
+        return self.block
+    
     def get_attempt(self):
         return self.attempt
 
     def get_tempo(self):
         return self.tempo
 
-    def clear_data_entry_form(self, participant_number_input, session_input, tempo_input, attempt_input):
+    def clear_data_entry_form(self, participant_number_input, session_input, block_input, attempt_input, tempo_input, ):
         participant_number_input.text = ''
         session_input.text = ''
-        tempo_input.text = ''
+        block_input.text = ''
         attempt_input.text = ''
+        tempo_input.text = ''
+        
