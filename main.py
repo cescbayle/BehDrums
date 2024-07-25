@@ -30,6 +30,7 @@ Window.left = center_x
 Window.top = center_y
 
 
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 # SCREENS
@@ -87,63 +88,48 @@ class NewBaselineRecording_Results_Screen(BaseScreen):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-# Screens for the New Task Recording A
-class NewTaskRecording_A_Screen(BaseScreen):
+# Screens for the New Task Recording
+class NewTaskRecording_Screen(BaseScreen):
     pass
 
-class NewTaskRecording_A_Description_Screen(BaseScreen):
+class NewTaskRecording_Description_Screen(BaseScreen):
     pass
 
-class NewTaskRecording_A_Record_Screen(BaseScreen):
+class NewTaskRecording_Record_Screen(BaseScreen):
     pass
 
-class NewTaskRecording_A_SelfReportedData_Screen(BaseScreen):
+class NewTaskRecording_SelfReportedData_Screen(BaseScreen):
     pass
 
-class NewTaskRecording_A_Analyze_Screen(BaseScreen):
+class NewTaskRecording_Analyze_Screen(BaseScreen):
+    pass
     pass
 
-class NewTaskRecording_A_Prediction_Screen(BaseScreen):
+class NewTaskRecording_Results_Screen(BaseScreen):
     pass
 
-class NewTaskRecording_A_Results_Screen(BaseScreen):
-    pass
+    performance_result_task = StringProperty('XX.XX%')
 
-    performance_result_task_a = StringProperty('XX.XX%')
-
-    def update_performance_task_a(self, new_result_task_a):
-        self.performance_result_task_a = f'{new_result_task_a}'
+    def update_performance_task(self, new_result_task):
+        self.performance_result_task = f'{new_result_task}'
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-# Screens for the New Task Recording B
-class NewTaskRecording_B_Screen(BaseScreen):
-    pass
+# Screen for New prediction Screen
 
-class NewTaskRecording_B_Description_Screen(BaseScreen):
-    pass
-
-class NewTaskRecording_B_Record_Screen(BaseScreen):
-    pass
-
-class NewTaskRecording_B_SelfReportedData_Screen(BaseScreen):
-    pass
-
-class NewTaskRecording_B_Analyze_Screen(BaseScreen):
-    pass
-
-class NewTaskRecording_B_Results_Screen(BaseScreen):
-    pass
-
-    performance_result_task_b = StringProperty('XX.XX%')
-
-    def update_performance_task_b(self, new_result_task_b):
-        self.performance_result_task_b = f'{new_result_task_b}'
-
-class NewTaskRecording_B_Prediction_Screen(BaseScreen):
+class NewPrediction_Screen(BaseScreen):
     pass
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Screen for Flow Short Scale (FSS) Form
+
+class NewFlowShortScale_1_Screen(BaseScreen):
+    pass
+
+class NewFlowShortScale_2_Screen(BaseScreen):
+    pass
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -163,20 +149,15 @@ class BehDrumsApp(App):
         sm.add_widget(NewBaselineRecording_SelfReportedData_Screen(name='new_baseline_recording_self_reported_data'))
         sm.add_widget(NewBaselineRecording_Analyze_Screen(name='new_baseline_recording_analyze'))
         sm.add_widget(NewBaselineRecording_Results_Screen(name='new_baseline_recording_results'))
-        sm.add_widget(NewTaskRecording_A_Screen(name='new_task_recording_a'))
-        sm.add_widget(NewTaskRecording_A_Description_Screen(name='new_task_recording_a_description'))
-        sm.add_widget(NewTaskRecording_A_Record_Screen(name='new_task_recording_a_record'))
-        sm.add_widget(NewTaskRecording_A_SelfReportedData_Screen(name='new_task_recording_a_self_reported_data'))
-        sm.add_widget(NewTaskRecording_A_Analyze_Screen(name='new_task_recording_a_analyze'))
-        sm.add_widget(NewTaskRecording_A_Prediction_Screen(name='new_task_recording_a_prediction'))
-        sm.add_widget(NewTaskRecording_A_Results_Screen(name='new_task_recording_a_results')) 
-        sm.add_widget(NewTaskRecording_B_Screen(name='new_task_recording_b'))
-        sm.add_widget(NewTaskRecording_B_Description_Screen(name='new_task_recording_b_description'))
-        sm.add_widget(NewTaskRecording_B_Record_Screen(name='new_task_recording_b_record'))
-        sm.add_widget(NewTaskRecording_B_SelfReportedData_Screen(name='new_task_recording_b_self_reported_data'))
-        sm.add_widget(NewTaskRecording_B_Analyze_Screen(name='new_task_recording_b_analyze'))
-        sm.add_widget(NewTaskRecording_B_Results_Screen(name='new_task_recording_b_results'))
-        sm.add_widget(NewTaskRecording_B_Prediction_Screen(name='new_task_recording_b_prediction'))
+        sm.add_widget(NewTaskRecording_Screen(name='new_task_recording'))
+        sm.add_widget(NewTaskRecording_Description_Screen(name='new_task_recording_description'))
+        sm.add_widget(NewTaskRecording_Record_Screen(name='new_task_recording_record'))
+        sm.add_widget(NewTaskRecording_SelfReportedData_Screen(name='new_task_recording_self_reported_data'))
+        sm.add_widget(NewTaskRecording_Analyze_Screen(name='new_task_recording_analyze'))
+        sm.add_widget(NewTaskRecording_Results_Screen(name='new_task_recording_results'))
+        sm.add_widget(NewPrediction_Screen(name='new_prediction'))
+        sm.add_widget(NewFlowShortScale_1_Screen(name='new_flow_short_scale_1'))
+        sm.add_widget(NewFlowShortScale_2_Screen(name='new_flow_short_scale_2'))
         return sm
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -185,7 +166,7 @@ class BehDrumsApp(App):
 
     # Function to create and submit the registration form
 
-    def submit_new_participant_form(self, participant_id_input, participant_group_input, name_input, lastname_input, age_input, genre_input, mainhand_input, years_playing_input, trainning_input, practice_hours_input, rudiments_familiarity_input, rudiments_in_routine_input, rudiments_practice_hours_input):
+    def submit_new_participant_form(self, participant_id_input, name_input, lastname_input, age_input, genre_input, mainhand_input, years_playing_input, trainning_input, practice_hours_input, rudiments_familiarity_input, rudiments_in_routine_input, rudiments_practice_hours_input):
         # Define the output directory
         output_dir = 'BehDrums/participants_registration'
         # Ensure the directory exists
@@ -200,14 +181,13 @@ class BehDrumsApp(App):
         with open(full_path, mode='w', newline='') as file:
             writer = csv.writer(file)
             # Write the header
-            writer.writerow(['Participant ID', 'Participant Group', 'Name', 'Last Name', 'Age', 'Genre', 'Main Hand', 'Years Playing', 'Formal Training', 'Practise Hours per Week', 'Familiar with Rudiments', 'Rudiments in Practice Routine', 'Rudiments Practise Hours per Week'])
+            writer.writerow(['Participant ID', 'Name', 'Last Name', 'Age', 'Genre', 'Main Hand', 'Years Playing', 'Formal Training', 'Practise Hours per Week', 'Familiar with Rudiments', 'Rudiments in Practice Routine', 'Rudiments Practise Hours per Week'])
             # Write the participant's data
-            writer.writerow([participant_id_input, participant_group_input, name_input, lastname_input, age_input, genre_input, mainhand_input, years_playing_input, trainning_input, practice_hours_input, rudiments_familiarity_input, rudiments_in_routine_input, rudiments_practice_hours_input])
+            writer.writerow([participant_id_input, name_input, lastname_input, age_input, genre_input, mainhand_input, years_playing_input, trainning_input, practice_hours_input, rudiments_familiarity_input, rudiments_in_routine_input, rudiments_practice_hours_input])
 
     # Function to clear the form
-    def clear_new_participant_form(self, participant_id_input, participant_group_input, name_input, lastname_input, age_input, genre_input, mainhand_input, years_playing_input, trainning_input, practice_hours_input, rudiments_familiarity_input, rudiments_in_routine_input, rudiments_practice_hours_input):
+    def clear_new_participant_form(self, participant_id_input, name_input, lastname_input, age_input, genre_input, mainhand_input, years_playing_input, trainning_input, practice_hours_input, rudiments_familiarity_input, rudiments_in_routine_input, rudiments_practice_hours_input):
         participant_id_input.text = ''
-        participant_group_input.text = ''
         name_input.text = ''
         lastname_input.text = ''
         age_input.text = ''
@@ -377,7 +357,7 @@ class BehDrumsApp(App):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-# NEW TASK RECORDING (A and B)
+# NEW TASK RECORDING
 
     # ----- RECORDING SCREEN --------------------------------------------------------------------------------------------
 
@@ -452,11 +432,11 @@ class BehDrumsApp(App):
 
     # ----- PERFORMANCE RESULTS SCREEN -------------------------------------------------------------------------------------
 
-    # TASK RECORDING A
+    # TASK RECORDING
 
     # Functions to show the overall accuracy result in "Performance results"
 
-    def get_score_percentage_from_csv_task_a(self):
+    def get_score_percentage_from_csv_task(self):
         form_handler = FormHandler()
         participant = form_handler.get_participant_number()
         session = form_handler.get_session()
@@ -477,52 +457,15 @@ class BehDrumsApp(App):
         print("Overall Count Percentage:", score_result)
         return score_result
 
-    def show_results_task_a(self):
-        overall_count_with_flams_percentage = self.get_score_percentage_from_csv_task_a()
+    def show_results_task(self):
+        overall_count_with_flams_percentage = self.get_score_percentage_from_csv_task()
         if overall_count_with_flams_percentage is not None:
-            self.performance_result_task_a = f'{overall_count_with_flams_percentage}%'
-            results_screen_task_a = self.root.get_screen('new_task_recording_a_results')
-            overall_count_with_flams_percentage = self.get_score_percentage_from_csv_task_a()
-            results_screen_task_a.update_performance_task_a(overall_count_with_flams_percentage)
+            self.performance_result_task = f'{overall_count_with_flams_percentage}%'
+            results_screen_task = self.root.get_screen('new_task_recording_results')
+            overall_count_with_flams_percentage = self.get_score_percentage_from_csv_task()
+            results_screen_task.update_performance_task(overall_count_with_flams_percentage)
         else:
-            self.performance_result_task_a = 'Data not available yet'
-
-
-    # TASK RECORDING B
-
-    # Functions to show the overall accuracy result in "Performance results"
-
-    def get_score_percentage_from_csv_task_b(self):
-        form_handler = FormHandler()
-        participant = form_handler.get_participant_number()
-        session = form_handler.get_session()
-        attempt = form_handler.get_attempt()
-        tempo = form_handler.get_tempo()
-        results_file_path = f'BehDrums/recording_results/participant{participant}_session{session}_attempt{attempt}_{tempo}bpm_flamparadiddle_recording_results.csv'
-        
-        if not os.path.exists(results_file_path):
-            print(f"File '{results_file_path}' does not exist yet. It will be created later.")
-            return None  # Or return a default value that makes sense in your application
-        
-        with open(results_file_path, newline='') as csvfile:
-            reader = csv.reader(csvfile)
-            rows = list(reader)
-            # Assuming 0-based indexing: row 7 and column 4 is row index 6 and column index 3
-            score_result = rows[6][3] #UPDATE FOR FLAM PARADIDDLE OUTPUT .CSV
-        
-        print("Overall Count Percentage:", score_result)
-        return score_result
-
-    def show_results_task_b(self):
-        overall_count_with_flams_percentage = self.get_score_percentage_from_csv_task_b()
-        if overall_count_with_flams_percentage is not None:
-            self.performance_result_task_b = f'{overall_count_with_flams_percentage}%'
-            results_screen_task_b = self.root.get_screen('new_task_recording_b_results')
-            overall_count_with_flams_percentage = self.get_score_percentage_from_csv_task_b()
-            results_screen_task_b.update_performance_task_b(overall_count_with_flams_percentage)
-        else:
-            self.performance_result_task_b = 'Data not available yet'
-
+            self.performance_result_task = 'Data not available yet'
 
 
 
@@ -557,6 +500,100 @@ class BehDrumsApp(App):
         prediction_input.text = ''
 
 # ----------------------------------------------------------------------------------------------------------------------
+
+# FLOW SHORT SCALE FORM
+
+    # ----- PERFORMANCE SELF-REPORTED DATA SCREEN -----------------------------------------------------------------------
+
+    # Function to create and submit the performance self-reported data form (baseline)
+
+    def submit_fss_form(self):
+        # Define the output directory
+        output_dir = 'BehDrums/flow_short_scale_data'
+        # Ensure the directory exists
+        os.makedirs(output_dir, exist_ok=True)
+        # Get the number of the participant from the form input ("FormHandler")
+        form_handler = FormHandler()
+        participant = form_handler.get_participant_number()
+        session = form_handler.get_session()
+        block = form_handler.get_block()
+        # Define the CSV file name using the participant number
+        filename = f'participant_{participant}_session{session}_block{block}_fss_report.csv'
+        # Construct the full path
+        full_path = os.path.join(output_dir, filename)
+
+        # Get the root widget
+        root = self.root
+
+        # Collect values from the first screen
+        screen1 = root.get_screen('new_flow_short_scale_1')
+        question_1_input = screen1.ids.question_1_input.text
+        question_2_input = screen1.ids.question_2_input.text
+        question_3_input = screen1.ids.question_3_input.text
+        question_4_input = screen1.ids.question_4_input.text
+        question_5_input = screen1.ids.question_5_input.text
+        question_6_input = screen1.ids.question_6_input.text
+        question_7_input = screen1.ids.question_7_input.text
+        question_8_input = screen1.ids.question_8_input.text
+
+        # Collect values from the second screen
+        screen2 = root.get_screen('new_flow_short_scale_2')
+        question_9_input = screen2.ids.question_9_input.text
+        question_10_input = screen2.ids.question_10_input.text
+        question_11_input = screen2.ids.question_11_input.text
+        question_12_input = screen2.ids.question_12_input.text
+        question_13_input = screen2.ids.question_13_input.text
+        question_14_input = screen2.ids.question_14_input.text
+        question_15_input = screen2.ids.question_15_input.text
+        question_16_input = screen2.ids.question_16_input.text
+
+        # Open the file in write mode ('w') since each participant gets a new file
+        with open(full_path, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            # Write the header
+            writer.writerow([
+                'Question 1', 'Question 2', 'Question 3', 'Question 4', 'Question 5',
+                'Question 6', 'Question 7', 'Question 8', 'Question 9', 'Question 10',
+                'Question 11', 'Question 12', 'Question 13', 'Question 14', 'Question 15', 'Question 16'
+            ])
+            # Write the answers
+            writer.writerow([
+                question_1_input, question_2_input, question_3_input, question_4_input,
+                question_5_input, question_6_input, question_7_input, question_8_input,
+                question_9_input, question_10_input, question_11_input, question_12_input,
+                question_13_input, question_14_input, question_15_input, question_16_input
+            ])
+        
+        print(f"Flow Short Scale form submitted for participant {participant}, session {session}, block {block}")
+
+    # Function to clear the form (baseline)
+    def clear_fss_form(self):
+        # Get the root widget
+        root = self.root
+
+        # Clear values from the first screen
+        screen1 = root.get_screen('new_flow_short_scale_1')
+        screen1.ids.question_1_input.text = ''
+        screen1.ids.question_2_input.text = ''
+        screen1.ids.question_3_input.text = ''
+        screen1.ids.question_4_input.text = ''
+        screen1.ids.question_5_input.text = ''
+        screen1.ids.question_6_input.text = ''
+        screen1.ids.question_7_input.text = ''
+        screen1.ids.question_8_input.text = ''
+
+        # Clear values from the second screen
+        screen2 = root.get_screen('new_flow_short_scale_2')
+        screen2.ids.question_9_input.text = ''
+        screen2.ids.question_10_input.text = ''
+        screen2.ids.question_11_input.text = ''
+        screen2.ids.question_12_input.text = ''
+        screen2.ids.question_13_input.text = ''
+        screen2.ids.question_14_input.text = ''
+        screen2.ids.question_15_input.text = ''
+        screen2.ids.question_16_input.text = ''
+
+
 
 
 
