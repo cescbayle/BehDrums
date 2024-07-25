@@ -66,20 +66,28 @@
             on_press: root.manager.current = "new_baseline_recording" 
 
         Button:
-            text: 'NEW TASK RECORDING A'
+            text: 'NEW TASK RECORDING'
             bold: True
             font_size: '20sp'
             size_hint: 0.2, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.40}
-            on_press: root.manager.current = "new_task_recording_a" 
+            on_press: root.manager.current = "new_task_recording" 
 
         Button:
-            text: 'NEW TASK RECORDING B'
+            text: 'NEW PREDICTION'
             bold: True
             font_size: '20sp'
             size_hint: 0.2, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.25}
-            on_press: root.manager.current = "new_task_recording_b" 
+            on_press: root.manager.current = "new_prediction" 
+
+        Button:
+            text: 'NEW FSS FORM'
+            bold: True
+            font_size: '20sp'
+            size_hint: 0.2, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.10}
+            on_press: root.manager.current = "new_flow_short_scale_1" 
 
 
 # ------------------- NEW PARTICIPANT REGISTRATION -------------------
@@ -119,19 +127,6 @@
             width: self.texture_size[0]
         TextInput:
             id: participant_id_input
-            multiline: False
-            hint_text: 'TO BE COMPLETED BY THE RESEARCHER'
-            size_hint_y: None
-            height: 30
-
-        # Participant Group
-        Label:
-            text: 'Participant group:'
-            color: 0, 0, 0, 1  # Black color
-            halign: 'left'
-            width: self.texture_size[0]
-        TextInput:
-            id: participant_group_input
             multiline: False
             hint_text: 'TO BE COMPLETED BY THE RESEARCHER'
             size_hint_y: None
@@ -289,7 +284,6 @@
         pos_hint: {'center_x': 0.5, 'center_y': 0.20}
         on_release:
             participant_id = participant_id_input.text
-            participant_group = participant_group_input.text
             name = name_input.text
             lastname = lastname_input.text
             age = age_input.text
@@ -301,8 +295,8 @@
             rudiments_familiarity = rudiments_familiarity_input.text
             rudiments_in_routine = rudiments_in_routine_input.text
             rudiments_practice_hours = rudiments_practice_hours_input.text
-            app.submit_new_participant_form(participant_id, participant_group, name, lastname, age, genre, mainhand, years_playing, trainning, practice_hours, rudiments_familiarity, rudiments_in_routine, rudiments_practice_hours)
-            app.clear_new_participant_form(participant_id_input, participant_group_input, name_input, lastname_input, age_input, genre_input, mainhand_input, years_playing_input, trainning_input, practice_hours_input, rudiments_familiarity_input, rudiments_in_routine_input, rudiments_practice_hours_input)
+            app.submit_new_participant_form(participant_id, name, lastname, age, genre, mainhand, years_playing, trainning, practice_hours, rudiments_familiarity, rudiments_in_routine, rudiments_practice_hours)
+            app.clear_new_participant_form(participant_id_input, name_input, lastname_input, age_input, genre_input, mainhand_input, years_playing_input, trainning_input, practice_hours_input, rudiments_familiarity_input, rudiments_in_routine_input, rudiments_practice_hours_input)
 
 
     # Go back to start page button
@@ -1072,9 +1066,9 @@
 
 
 
-# ------------------- NEW TASK RECORDING A -------------------
+# ------------------- NEW TASK RECORDING -------------------
 
-<NewTaskRecording_A_Screen>:
+<NewTaskRecording_Screen>:
     # Title
     FloatLayout:
         Label:
@@ -1084,14 +1078,7 @@
             bold: True
             pos_hint: {'center_x': 0.5, 'center_y': 0.95}
 
-    # Subtile (Group)
-    FloatLayout:
-        Label:
-            text: '[ GROUP A ]'
-            color: 0, 0, 0, 1  # Black color
-            font_size: '40sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.88}
+
     
     # Back Arrow Button
     FloatLayout:
@@ -1144,6 +1131,21 @@
             size_hint_y: None
             height: 35
 
+        # Block
+        Label:
+            text: 'BLOCK:'
+            font_size: '30sp'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: block_input
+            font_size: '20sp'
+            multiline: False
+            hint_text: 'TO BE COMPLETED BY THE RESEARCHER'
+            size_hint_y: None
+            height: 35
+
         # Attempt
         Label:
             text: 'ATTEMPT:'
@@ -1182,8 +1184,8 @@
         size_hint: 0.2, 0.1
         pos_hint: {'center_x': 0.5, 'center_y': 0.20}
         on_release:
-            app.form_handler.submit_data_entry_form(participant_number_input.text, session_input.text,tempo_input.text, attempt_input.text)
-            app.form_handler.clear_data_entry_form(participant_number_input, session_input, tempo_input, attempt_input)
+            app.form_handler.submit_data_entry_form(participant_number_input.text, session_input.text, block_input.text, attempt_input.text, tempo_input.text)
+            app.form_handler.clear_data_entry_form(participant_number_input, session_input, block_input, attempt_input, tempo_input)
    
 
     # Gontinue Button
@@ -1193,10 +1195,10 @@
         font_size: '20sp'
         size_hint: 0.15, 0.05
         pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_a_description'
+        on_press: root.manager.current = 'new_task_recording_description'
 
 
-<NewTaskRecording_A_Description_Screen>:
+<NewTaskRecording_Description_Screen>:
     # Title
     FloatLayout:
         Label:
@@ -1216,7 +1218,7 @@
             allow_stretch: True
             keep_ratio: True
             pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_a'
+            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording'
 
     # Description text and images 
     BoxLayout:
@@ -1304,10 +1306,10 @@
         font_size: '20sp'
         size_hint: 0.15, 0.05
         pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_a_record'
+        on_press: root.manager.current = 'new_task_recording_record'
 
 
-<NewTaskRecording_A_Record_Screen>:
+<NewTaskRecording_Record_Screen>:
     # Title
     FloatLayout:
         Label:
@@ -1326,7 +1328,7 @@
             allow_stretch: True
             keep_ratio: True
             pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_a_description'
+            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_description'
     
     # Record Button
     Button:
@@ -1345,10 +1347,10 @@
         font_size: '20sp'
         size_hint: 0.15, 0.05
         pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_a_self_reported_data'
+        on_press: root.manager.current = 'new_task_recording_self_reported_data'
 
 
-<NewTaskRecording_A_SelfReportedData_Screen>:
+<NewTaskRecording_SelfReportedData_Screen>:
     # Title
     FloatLayout:
         Label:
@@ -1367,7 +1369,7 @@
             allow_stretch: True
             keep_ratio: True
             pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_a_record'
+            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_record'
 
 
     # Performance Self-Reported Data description
@@ -1480,9 +1482,9 @@
         font_size: '20sp'
         size_hint: 0.15, 0.05
         pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_a_analyze'
+        on_press: root.manager.current = 'new_task_recording_analyze'
 
-<NewTaskRecording_A_Analyze_Screen>:
+<NewTaskRecording_Analyze_Screen>:
     # Title
     FloatLayout:
         Label:
@@ -1501,7 +1503,7 @@
             allow_stretch: True
             keep_ratio: True
             pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_a_self_reported_data'
+            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_self_reported_data'
     
     # Analysis Button
     Button:
@@ -1520,14 +1522,14 @@
         font_size: '20sp'
         size_hint: 0.15, 0.05
         pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_a_prediction'
+        on_press: root.manager.current = 'new_task_recording_results'
 
 
-<NewTaskRecording_A_Prediction_Screen>:
+<NewTaskRecording_Results_Screen>:
     # Title
     FloatLayout:
         Label:
-            text: 'PERFORMANCE PREDICTION' 
+            text: 'PERFORMANCE RESULTS' 
             color: 0, 0, 0, 1  # Black color
             font_size: '50sp'
             bold: True
@@ -1542,7 +1544,84 @@
             allow_stretch: True
             keep_ratio: True
             pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_a_analyze'
+            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_prediction'
+
+    # Performance results text
+    FloatLayout:
+        Label:
+            text: 'Your performance accuracy was: ' 
+            color: 0, 0, 0, 1  # Black color
+            font_size: '70sp'
+            bold: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.7}    
+
+    # Performance results percentage
+    FloatLayout:
+        Label:
+            text: root.performance_result_task
+            color: 0, 0, 0, 1  # Black color
+            font_size: '130sp'
+            bold: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+    # Show results button
+    Button:
+        text: 'Show Results'
+        bold: True
+        font_size: '30sp'
+        size_hint: 0.2, 0.1
+        pos_hint: {'center_x': 0.5, 'center_y': 0.20}
+        on_release: app.show_results_task() 
+
+
+    # Go back to "New Baseline Recording" button
+    Button:
+        text: 'Go back to New Task Recording'
+        bold: True
+        font_size: '20sp'
+        size_hint: 0.2, 0.05
+        pos_hint: {'center_x': 0.5, 'center_y': 0.10}
+        on_press: root.manager.current = 'new_task_recording'
+        background_color: 0, 0, 1, 1  # Blue color
+
+
+    # Continue to "prediction screen" button
+    Button:
+        text: 'Continue to New Prediction'
+        bold: True
+        font_size: '20sp'
+        size_hint: 0.2, 0.05
+        pos_hint: {'center_x': 0.8, 'center_y': 0.10}
+        on_press: root.manager.current = 'new_prediction'
+        background_color: 0, 0, 0, 1  # Black color
+
+
+
+
+# ------------------- NEW PREDICTION SCREEN-------------------
+
+<NewPrediction_Screen>:
+    # Title
+    FloatLayout:
+        Label:
+            text: 'NEW PREDICTION'
+            color: 0, 0, 0, 1  # Black color
+            font_size: '50sp'
+            bold: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.95}
+
+
+    
+    # Back Arrow Button
+    FloatLayout:
+        Image:
+            source: 'BehDrums/Images/left-black-arrow.png'
+            size_hint: None, None
+            size: self.parent.width * 0.05, self.parent.height * 0.05
+            allow_stretch: True
+            keep_ratio: True
+            pos_hint: {'x': 0, 'top': 0.99}
+            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'start_page'
 
     # Performance prediction question
     FloatLayout:
@@ -1599,25 +1678,49 @@
             app.submit_prediction_form(prediction)
             app.clear_prediction_form(prediction_input)
 
-    # Gontinue Button
+
+    # Go back to start page button
     Button:
-        text: 'Continue'
+        text: 'Go back to start page'
         bold: True
         font_size: '20sp'
         size_hint: 0.15, 0.05
         pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_a_results'
+        on_press: root.manager.current = 'start_page'
+        background_color: 0, 0, 1, 1  # Blue color
+
+    # Continue to FSS Form" button
+    Button:
+        text: 'Continue New FSS Form'
+        bold: True
+        font_size: '20sp'
+        size_hint: 0.2, 0.05
+        pos_hint: {'center_x': 0.8, 'center_y': 0.10}
+        on_press: root.manager.current = 'new_flow_short_scale_1'
+        background_color: 0, 0, 0, 1  # Black color
 
 
-<NewTaskRecording_A_Results_Screen>:
-    # Title
+# ------------------- NEW FLOW SHORT SCALE FORM -------------------
+
+<NewFlowShortScale_1_Screen>:
+ # Title
     FloatLayout:
         Label:
-            text: 'PERFORMANCE RESULTS' 
+            text: 'NEW FLOW SHORT SCALE FORM'
             color: 0, 0, 0, 1  # Black color
             font_size: '50sp'
             bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.95}    
+            pos_hint: {'center_x': 0.5, 'center_y': 0.95}
+
+    # Subtile (Page)
+    FloatLayout:
+        Label:
+            text: '(Page 1/2)'
+            color: 0, 0, 0, 1  # Black color
+            font_size: '40sp'
+            bold: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.88}
+
     
     # Back Arrow Button
     FloatLayout:
@@ -1628,65 +1731,155 @@
             allow_stretch: True
             keep_ratio: True
             pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_a_prediction'
+            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'start_page'
 
-    # Performance results text
-    FloatLayout:
+    # FSS FORM DESCRIPTION
+    BoxLayout:
         Label:
-            text: 'Your performance accuracy was: ' 
+            text: 'Please, answer the following questions from your previous performances, where 1 is Not at all and 7 is Very much.'
             color: 0, 0, 0, 1  # Black color
-            font_size: '70sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.7}    
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}  
 
-    # Performance results percentage
-    FloatLayout:
+
+ # FSS form, page 1 (8 questions)
+    GridLayout:
+        cols: 2
+        size_hint: 0.7, None
+        height: self.minimum_height
+        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+        padding: 15
+        spacing: 15
+
+        # Question 1:
         Label:
-            text: root.performance_result_task_a
+            text: 'I feel just the right amount of challenge'
             color: 0, 0, 0, 1  # Black color
-            font_size: '130sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_1_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
 
-    # Show results button
+        # Question 2:
+        Label:
+            text: 'My thoughts/activities run fluidly and smoothly'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_2_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+        # Question 3:
+        Label:
+            text: 'I do not notice time passing'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_3_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+        # Question 4:
+        Label:
+            text: 'I have no difficulty concentrating'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_4_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+        # Question 5:
+        Label:
+            text: 'My mind is completely clear'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_5_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+        # Question 6:
+        Label:
+            text: 'I am totally absorbed in what I am doing'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_6_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+        # Question 7:
+        Label:
+            text: 'The right thoughts/movements occur of their own accord'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_7_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+        # Question 8:
+        Label:
+            text: 'I know what I have to do each step of the way'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_8_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+    # Gontinue Button
     Button:
-        text: 'Show Results'
-        bold: True
-        font_size: '30sp'
-        size_hint: 0.2, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.20}
-        on_release: app.show_results_task_a() 
-
-
-    # Go back to "New Baseline Recording" button
-    Button:
-        text: 'Go back to New Task Recording A'
+        text: 'Continue to next page'
         bold: True
         font_size: '20sp'
-        size_hint: 0.2, 0.05
-        pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_a'
-        background_color: 0, 0, 1, 1  # Blue color
+        size_hint: 0.15, 0.05
+        pos_hint: {'center_x': 0.5, 'center_y': 0.35}
+        on_press: root.manager.current = 'new_flow_short_scale_2'
 
 
 
 
-# ------------------- NEW TASK RECORDING B -------------------
-
-<NewTaskRecording_B_Screen>:
-    # Title
+<NewFlowShortScale_2_Screen>:
+ # Title
     FloatLayout:
         Label:
-            text: 'NEW TASK RECORDING'
+            text: 'NEW FLOW SHORT SCALE FORM'
             color: 0, 0, 0, 1  # Black color
             font_size: '50sp'
             bold: True
             pos_hint: {'center_x': 0.5, 'center_y': 0.95}
 
-    # Subtile (Group)
+    # Subtile (Page)
     FloatLayout:
         Label:
-            text: '[ GROUP B ]'
+            text: '(Page 2/2)'
             color: 0, 0, 0, 1  # Black color
             font_size: '40sp'
             bold: True
@@ -1701,288 +1894,17 @@
             allow_stretch: True
             keep_ratio: True
             pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'start_page'
+            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_flow_short_scale_1'
 
-
-    # New Data Entry Form
-    GridLayout:
-        cols: 2
-        size_hint: 0.45, None
-        height: self.minimum_height
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        padding: 15
-        spacing: 15
-
-        # Participant Number
-        Label:
-            text: 'PARTICIPANT NUMBER:'
-            font_size: '30sp'
-            color: 0, 0, 0, 1  # Black color
-            halign: 'left'
-            width: self.texture_size[0]
-        TextInput:
-            id: participant_number_input
-            font_size: '20sp'
-            multiline: False
-            hint_text: 'TO BE COMPLETED BY THE RESEARCHER'
-            size_hint_y: None
-            height: 35
-
-        # Session
-        Label:
-            text: 'SESSION:'
-            font_size: '30sp'
-            color: 0, 0, 0, 1  # Black color
-            halign: 'left'
-            width: self.texture_size[0]
-        TextInput:
-            id: session_input
-            font_size: '20sp'
-            multiline: False
-            hint_text: 'TO BE COMPLETED BY THE RESEARCHER'
-            size_hint_y: None
-            height: 35
-
-        # Attempt
-        Label:
-            text: 'ATTEMPT:'
-            font_size: '30sp'
-            color: 0, 0, 0, 1  # Black color
-            halign: 'left'
-            width: self.texture_size[0]
-        TextInput:
-            id: attempt_input
-            font_size: '20sp'
-            multiline: False
-            hint_text: 'TO BE COMPLETED BY THE RESEARCHER'
-            size_hint_y: None
-            height: 35
-
-        # Tempo value
-        Label:
-            text: 'TEMPO (BPM):'
-            font_size: '30sp'
-            color: 0, 0, 0, 1  # Black color
-            halign: 'left'
-            width: self.texture_size[0]
-        TextInput:
-            id: tempo_input
-            font_size: '20sp'
-            multiline: False
-            hint_text: 'TO BE COMPLETED BY THE RESEARCHER'
-            size_hint_y: None
-            height: 35
-
-    # Submit Button
-    Button:
-        text: 'SAVE'
-        bold: True
-        font_size: '30sp'
-        size_hint: 0.2, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.20}
-        on_release:
-            app.form_handler.submit_data_entry_form(participant_number_input.text, session_input.text,tempo_input.text, attempt_input.text)
-            app.form_handler.clear_data_entry_form(participant_number_input, session_input, tempo_input, attempt_input)
-
-
-    # Gontinue Button
-    Button:
-        text: 'Continue'
-        bold: True
-        font_size: '20sp'
-        size_hint: 0.15, 0.05
-        pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_b_description'
-
-
-<NewTaskRecording_B_Description_Screen>:
-    # Title
-    FloatLayout:
-        Label:
-            text: 'TASK DESCRIPTION'
-            color: 0, 0, 0, 1  # Black color
-            font_size: '50sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.95}    
-    
-    
-    # Back Arrow Button
-    FloatLayout:
-        Image:
-            source: 'BehDrums/Images/left-black-arrow.png'
-            size_hint: None, None
-            size: self.parent.width * 0.05, self.parent.height * 0.05
-            allow_stretch: True
-            keep_ratio: True
-            pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_b'
-
-    # Description text and images 
-    BoxLayout:
-        orientation: 'vertical'
-        size_hint: None, None
-        size: self.parent.width * 0.9, self.parent.height * 0.6
-        pos_hint: {'center_x': 0.5, 'top': 0.80}
-        padding: 10
-        spacing: 15
-
-        Label:
-            text: "Read the next instructions carefully. Please, do not hesitate to ask in case you have any doubts or questions."
-            color: 0, 0, 0, 1  # Black color
-            size_hint_y: None
-            height: self.texture_size[1]
-
-        Label:
-            text: "During this task you will perform a “flam paradiddle” rudiment over a metronome track, that you will listen during the recording."
-            color: 0, 0, 0, 1  # Black color
-            size_hint_y: None
-            height: self.texture_size[1]
-        
-        Label:
-            text: "This is the “flam paradiddle” pattern:"
-            color: 0, 0, 0, 1  # Black color
-            size_hint_y: None
-            height: self.texture_size[1]
-        
-        Image:
-            source: 'BehDrums/Images/flamparadiddle_pattern.png'
-            allow_stretch: True
-            keep_ratio: True
-            size_hint_y: None
-            height: dp(75)  # Adjust height as necessary
-
-        Label:
-            text: "You will play it over the middle central-lower drum pad, the one with the red circle in the following picture:"
-            color: 0, 0, 0, 1  # Black color
-            size_hint_y: None
-            height: self.texture_size[1]
-
-        Image:
-            source: 'BehDrums/Images/dtx12_pads_marked.png'
-            allow_stretch: True
-            keep_ratio: True
-            size_hint_y: None
-            height: dp(250)  # Adjust height as necessary
-
-        Label:
-            text: "Please, feel free to practise the rudiment pattern over this pad for a few seconds. Make sure you can listen a snare sound when you play it."
-            color: 0, 0, 0, 1  # Black color
-            size_hint_y: None
-            height: self.texture_size[1]
-
-        Label:
-            text: "During the recording, the metronome will start at an initial low tempo and it will increase gradually until it reaches a peak, which will be maintained over some time. Then, the metronome will decelerate gradually to the initial tempo."
-            color: 0, 0, 0, 1  # Black color
-            size_hint_y: None
-            height: self.texture_size[1]
-        
-        Label:
-            text: "The two first bars of the metronome consist of the count-in (pre-click). There will be a sign in the screen indicating the status of the count-in."
-            bold: True
-            color: 0, 0, 0, 1  # Black color
-            size_hint_y: None
-            height: self.texture_size[1]
-
-        Label:
-            text: "In the next screen, the recording will start after the button RECORD is pressed. The recording will stop automatically when the metronome track stops."
-            color: 0, 0, 0, 1  # Black color
-            size_hint_y: None
-            height: self.texture_size[1]
-
-        Label:
-            text: "Please, check that you can listen what you play on the drum pads, that the volume levels are suitable and everything so you are ready for recording. When you are ready, please press “Continue”."
-            color: 0, 0, 0, 1  # Black color
-            size_hint_y: None
-            height: self.texture_size[1]
-
-
-    # Gontinue Button
-    Button:
-        text: 'Continue'
-        bold: True
-        font_size: '20sp'
-        size_hint: 0.15, 0.05
-        pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_b_record'
-
-
-<NewTaskRecording_B_Record_Screen>:
-    # Title
-    FloatLayout:
-        Label:
-            text: 'RECORDING SCREEN' 
-            color: 0, 0, 0, 1  # Black color
-            font_size: '50sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.95}    
-    
-    # Back Arrow Button
-    FloatLayout:
-        Image:
-            source: 'BehDrums/Images/left-black-arrow.png'
-            size_hint: None, None
-            size: self.parent.width * 0.05, self.parent.height * 0.05
-            allow_stretch: True
-            keep_ratio: True
-            pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_b_description'
-    
-    # Record Button
-    Button:
-        text: 'RECORD'
-        bold: True
-        font_size: '30sp'
-        size_hint: 0.2, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        on_release: app.run_recording_script_task()
-
-
-    # Gontinue Button
-    Button:
-        text: 'Continue'
-        bold: True
-        font_size: '20sp'
-        size_hint: 0.15, 0.05
-        pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_b_self_reported_data'
-
-
-<NewTaskRecording_B_SelfReportedData_Screen>:
-    # Title
-    FloatLayout:
-        Label:
-            text: 'PERFORMANCE SELF-REPORTED DATA' 
-            color: 0, 0, 0, 1  # Black color
-            font_size: '50sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.95}    
-    
-    # Back Arrow Button
-    FloatLayout:
-        Image:
-            source: 'BehDrums/Images/left-black-arrow.png'
-            size_hint: None, None
-            size: self.parent.width * 0.05, self.parent.height * 0.05
-            allow_stretch: True
-            keep_ratio: True
-            pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_a_record'
-
-
-    # Performance Self-Reported Data description
+    # FSS FORM DESCRIPTION
     BoxLayout:
         Label:
-            text: 'Please, rate the following aspects of your performance during the recording. Use the next scale:'
+            text: 'Please, answer the following questions from your previous performances, where 1 is Not at all and 7 is Very much.'
             color: 0, 0, 0, 1  # Black color
             pos_hint: {'center_x': 0.5, 'center_y': 0.8}  
 
-    BoxLayout:
-        Label:
-            text: '1 not at all, 2 very little, 3 a little, 4 quite a lot, 5 a very great deal'
-            color: 0, 0, 0, 1  # Black color
-            pos_hint: {'center_x': 0.5, 'center_y': 0.75}  
 
-    # Performance Self-Reported Data form
+ # FSS form, page 2 (8 questions)
     GridLayout:
         cols: 2
         size_hint: 0.7, None
@@ -1991,70 +1913,121 @@
         padding: 15
         spacing: 15
 
-        # Question 1: Comfort
+        # Question 9:
         Label:
-            text: 'How comfortable did you feel during the performance?'
+            text: 'I feel that I have everything under control'
             color: 0, 0, 0, 1  # Black color
             halign: 'left'
             width: self.texture_size[0]
         TextInput:
-            id: comfort_input
+            id: question_9_input
             multiline: False
-            hint_text: '1 / 2 / 3 / 4 / 5'
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
             size_hint_y: None
             height: 30
 
-        # Question 2: Control
+        # Question 10:
         Label:
-            text: 'How much control did you feel during the performance?'
+            text: 'I am completely lost in thought'
             color: 0, 0, 0, 1  # Black color
             halign: 'left'
             width: self.texture_size[0]
         TextInput:
-            id: control_input
+            id: question_10_input
             multiline: False
-            hint_text: '1 / 2 / 3 / 4 / 5'
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
             size_hint_y: None
             height: 30
 
-        # Question 3: Focus
+        # Question 11:
         Label:
-            text: 'How focused did you feel during the performance?'
+            text: 'Something important to me is at stake here'
             color: 0, 0, 0, 1  # Black color
             halign: 'left'
             width: self.texture_size[0]
         TextInput:
-            id: focus_input
+            id: question_11_input
             multiline: False
-            hint_text: '1 / 2 / 3 / 4 / 5'
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
             size_hint_y: None
             height: 30
 
-        # Question 4: Challenge
+        # Question 12:
         Label:
-            text: 'How challenging did you feel the performance?'
+            text: 'I must not make any mistakes here'
             color: 0, 0, 0, 1  # Black color
             halign: 'left'
             width: self.texture_size[0]
         TextInput:
-            id: challenge_input
+            id: question_12_input
             multiline: False
-            hint_text: '1 / 2 / 3 / 4 / 5'
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
             size_hint_y: None
             height: 30
 
-        # Question 5: Satisfaction
+        # Question 13:
         Label:
-            text: 'How satisfied are you with your performance?'
+            text: 'I am worried about failing'
             color: 0, 0, 0, 1  # Black color
             halign: 'left'
             width: self.texture_size[0]
         TextInput:
-            id: satisfaction_input
+            id: question_13_input
             multiline: False
-            hint_text: '1 / 2 / 3 / 4 / 5'
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
             size_hint_y: None
             height: 30
+
+        # Question 14:
+        Label:
+            text: 'Compared to all other activities which I partake in,this one is... (easy/difficult)'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_14_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+        # Question 15:
+        Label:
+            text: 'I think that my competence in this area is... (low/high)'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_15_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+        # Question 16:
+        Label:
+            text: 'For me personally, the current demands are... (too low/just right/too high)'
+            color: 0, 0, 0, 1  # Black color
+            halign: 'left'
+            width: self.texture_size[0]
+        TextInput:
+            id: question_16_input
+            multiline: False
+            hint_text: '1 / 2 / 3 / 4 / 5 / 6 / 7'
+            size_hint_y: None
+            height: 30
+
+    # Go back Button
+    Button:
+        text: 'Back to previous page'
+        bold: True
+        font_size: '20sp'
+        size_hint: 0.15, 0.05
+        pos_hint: {'center_x': 0.5, 'center_y': 0.35}
+        on_press: root.manager.current = 'new_flow_short_scale_1'
+
+
+
 
     # Submit Button
     Button:
@@ -2064,212 +2037,16 @@
         size_hint: 0.2, 0.1
         pos_hint: {'center_x': 0.5, 'center_y': 0.20}
         on_release:
-            comfort = comfort_input.text
-            control = control_input.text
-            focus = focus_input.text
-            challenge = challenge_input.text
-            satisfaction = satisfaction_input.text
-            app.submit_performance_self_reported_data_form_task(comfort, control, focus, challenge, satisfaction)
-            app.clear_performance_self_reported_data_form_task(comfort_input, control_input, focus_input, challenge_input, satisfaction_input)
+            app.submit_fss_form()
+            app.clear_fss_form()
 
-    # Gontinue Button
+
+    # Go back to start page button
     Button:
-        text: 'Continue'
+        text: 'Go back to start page'
         bold: True
         font_size: '20sp'
         size_hint: 0.15, 0.05
         pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_b_results'
-
-
-
-
-
-<NewTaskRecording_B_Analyze_Screen>:
-    # Title
-    FloatLayout:
-        Label:
-            text: 'PERFORMANCE ANALYSIS' 
-            color: 0, 0, 0, 1  # Black color
-            font_size: '50sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.95}    
-    
-    # Back Arrow Button
-    FloatLayout:
-        Image:
-            source: 'BehDrums/Images/left-black-arrow.png'
-            size_hint: None, None
-            size: self.parent.width * 0.05, self.parent.height * 0.05
-            allow_stretch: True
-            keep_ratio: True
-            pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_b_self_reported_data'
-    
-    # Analysis Button
-    Button:
-        text: 'ANALYZE'
-        bold: True
-        font_size: '30sp'
-        size_hint: 0.2, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        on_release: app.run_analysis_script_flamparadiddle()
-
-
-    # Gontinue Button
-    Button:
-        text: 'Continue'
-        bold: True
-        font_size: '20sp'
-        size_hint: 0.15, 0.05
-        pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_a_results'
-
-
-
-<NewTaskRecording_B_Results_Screen>:
-    # Title
-    FloatLayout:
-        Label:
-            text: 'PERFORMANCE RESULTS' 
-            color: 0, 0, 0, 1  # Black color
-            font_size: '50sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.95}    
-    
-    # Back Arrow Button
-    FloatLayout:
-        Image:
-            source: 'BehDrums/Images/left-black-arrow.png'
-            size_hint: None, None
-            size: self.parent.width * 0.05, self.parent.height * 0.05
-            allow_stretch: True
-            keep_ratio: True
-            pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_b_self_analyze'
-
-    # Performance results text
-    FloatLayout:
-        Label:
-            text: 'Your performance accuracy was: ' 
-            color: 0, 0, 0, 1  # Black color
-            font_size: '70sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.7}    
-
-    # Performance results percentage
-    FloatLayout:
-        Label:
-            text: root.performance_result_task_b
-            color: 0, 0, 0, 1  # Black color
-            font_size: '130sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-
-    # Show results button
-    Button:
-        text: 'Show Results'
-        bold: True
-        font_size: '30sp'
-        size_hint: 0.2, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.20}
-        on_release: app.show_results_task_b() 
-
-    # Gontinue Button
-    Button:
-        text: 'Continue'
-        bold: True
-        font_size: '20sp'
-        size_hint: 0.15, 0.05
-        pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_b_prediction'
-
-
-
-<NewTaskRecording_B_Prediction_Screen>:
-    # Title
-    FloatLayout:
-        Label:
-            text: 'PERFORMANCE PREDICTION' 
-            color: 0, 0, 0, 1  # Black color
-            font_size: '50sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.95}    
-    
-    # Back Arrow Button
-    FloatLayout:
-        Image:
-            source: 'BehDrums/Images/left-black-arrow.png'
-            size_hint: None, None
-            size: self.parent.width * 0.05, self.parent.height * 0.05
-            allow_stretch: True
-            keep_ratio: True
-            pos_hint: {'x': 0, 'top': 0.99}
-            on_touch_down: if self.collide_point(*args[1].pos): app.root.current = 'new_task_recording_b_results'
-
-    # Performance prediction question
-    FloatLayout:
-        Label:
-            text: 'How accurate do you think your performance was?' 
-            color: 0, 0, 0, 1  # Black color
-            font_size: '60sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.7}    
-
-    # Performance prediction question description
-    FloatLayout:
-        Label:
-            text: 'Please, write your prediction score as a percentage in the next form:' 
-            color: 0, 0, 0, 1  # Black color
-            font_size: '40sp'
-            bold: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.6}    
-
-
-    # Performance prediction form
-    GridLayout:
-        cols: 2
-        size_hint: 0.25, 0.2
-        height: self.minimum_height
-        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
-        padding: 10
-        spacing: 10
-
-        TextInput:
-            id: prediction_input
-            multiline: False
-            hint_text: '00.00'
-            font_size: 80
-            size_hint_y: None
-            height: 100
-
-        Label:
-            text: '%'
-            color: 0, 0, 0, 1
-            font_size: 100
-            size_hint_y: None
-            height: 100
-
-    # Submit Button
-    Button:
-        text: 'SAVE'
-        bold: True
-        font_size: '30sp'
-        size_hint: 0.2, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.20}
-        on_release:
-            prediction = prediction_input.text
-            app.submit_prediction_form(prediction)
-            app.clear_prediction_form(prediction_input)
-
-
-    # Go back to "New Baseline Recording" button
-    Button:
-        text: 'Go back to New Task Recording B'
-        bold: True
-        font_size: '20sp'
-        size_hint: 0.2, 0.05
-        pos_hint: {'center_x': 0.5, 'center_y': 0.10}
-        on_press: root.manager.current = 'new_task_recording_b'
+        on_press: root.manager.current = 'start_page'
         background_color: 0, 0, 1, 1  # Blue color
-
